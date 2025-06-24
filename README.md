@@ -1,3 +1,101 @@
+# 🌿 NDVI-based Land Cover Classification – Summer Analytics 2025 Hackathon
+
+This repository contains my submission for the **Summer Analytics 2025 Mid Hackathon**, hosted by the **Consulting & Analytics Club (CAC), IIT Guwahati**, in collaboration with **GeeksforGeeks (GFG)**. The challenge focused on building a **Logistic Regression** model to classify land cover types using time-series NDVI (Normalized Difference Vegetation Index) data derived from satellite imagery.
+
+---
+
+## 🧠 Problem Statement
+
+Participants were provided with NDVI time-series data (27 timestamps) for various land patches and asked to classify each sample into one of the following six land cover classes:
+
+- `Water`
+- `Impervious`
+- `Farm`
+- `Forest`
+- `Grass`
+- `Orchard`
+
+### Constraints:
+- **Only Logistic Regression was allowed**
+- Evaluation was based on **Accuracy Score**
+- Dataset contained significant **noise** (e.g., due to cloud cover)
+
+---
+
+## 🏆 Competition Results
+
+| Metric                 | Value        |
+|------------------------|--------------|
+| 🧑‍🤝‍🧑 Entrants            | 1,942        |
+| 🧑 Participants         | 1,395        |
+| 🧠 Teams                | 1,395        |
+| 📤 Total Submissions   | 6,504        |
+| 📊 Public Leaderboard  | **Rank 56 / 1,395** |
+| 🔐 Private Leaderboard | **Rank 192 / 1,395** |
+| 🏅 Awards              | Kudos        |
+| 📛 Rated Competition?  | No – Not eligible for medals/points |
+
+---
+
+## 📁 Dataset Description
+
+The dataset consists of two files:
+
+- `hacktrain.csv`: Training data (noisy NDVI values and ground truth)
+- `hacktest.csv`: Test data (used for public/private leaderboard)
+
+Each sample contains:
+- `ID`: Unique identifier
+- 27 NDVI values (e.g., `20150720_N`)
+- `class`: Land cover label (train only)
+
+🧪 **Note:** The test set is a mix of:
+- **89% noisy** samples → used for **public leaderboard**
+- **11% clean** samples → used for **private leaderboard**
+
+---
+
+## 🧪 My Approach
+
+### 1. 🔧 Preprocessing
+
+- **Missing Values**:
+  - Filled using **median imputation** across each column.
+- **Outlier Handling**:
+  - Removed extreme NDVI values using IQR filtering (likely cloud artifacts).
+- **Feature Engineering**:
+  - Computed statistical aggregates:
+    - `mean`, `std`, `min`, `max`, `skew`, `kurtosis`
+  - Seasonal pattern extraction:
+    - Early-season vs. late-season NDVI mean
+  - Other signals:
+    - Count of NDVI values below 0 (possible non-vegetated land)
+    - NDVI change metrics (max - min)
+
+### 2. ⚙️ Model Training
+
+- **Model Used**: Logistic Regression (`One-vs-Rest`)
+- **Library**: `scikit-learn`
+- **Regularization**: L2 (Ridge penalty)
+- **Scaler**: StandardScaler
+- **Validation**:
+  - Used 5-fold stratified cross-validation on training data
+  - Tracked mean accuracy and standard deviation
+
+### 3. 📤 Prediction & Submission
+
+- Final model trained on full training set
+- Predictions made on test set
+- Created `submission.csv` with format:
+
+```csv
+ID,class
+1,water
+2,impervious
+3,grass
+...
+
+# Instructions
 
 ---
 
