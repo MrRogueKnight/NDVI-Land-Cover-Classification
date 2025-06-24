@@ -1,0 +1,1 @@
+# NDVI-Land-Cover-Classification
