@@ -1,98 +1,93 @@
+---
 
------
+# 🌿 Summer Analytics 2025 Hackathon: NDVI-based Land Cover Classification
 
-# Summer Analytics First Hackathon: NDVI-based Land Cover Classification
+Welcome to the **First Course Hackathon of Summer Analytics 2025**, organized by the **Consulting & Analytics Club** in collaboration with **GeeksforGeeks (GFG)**. In this challenge, you'll develop a machine learning model to classify land cover types using **NDVI (Normalized Difference Vegetation Index) time-series data** derived from satellite imagery and **OpenStreetMap (OSM)** annotations.
 
------
+🔗 **[Hackathon Link (Kaggle)](https://www.kaggle.com/competitions/summer-analytics-mid-hackathon/overview)**
 
-## 🌟 Overview
+🎁 **Prizes**: Top performers will receive **GFG Premium memberships**, and all participants are eligible for **exclusive discounts**!
 
-Welcome to the **First Course Hackathon of Summer Analytics 2025**\! This exciting event, hosted by the **Consulting & Analytics Club** and **GeeksforGeeks (GFG)**, challenges you to classify land cover types using **NDVI time-series data** from satellite imagery and OpenStreetMap (OSM) labels.
+---
 
-**🔗 Hackathon Link:** [https://www.kaggle.com/competitions/summer-analytics-mid-hackathon/overview](https://www.kaggle.com/competitions/summer-analytics-mid-hackathon/overview)
+## 🎯 Problem Statement
 
-Your primary goal is to build a **Logistic Regression model** that accurately predicts land cover classes despite the inherent noise in the NDVI signals. Top performers stand a chance to win **GFG Premium memberships**, and all participants will receive **exclusive discounts**\!
+You are tasked with building a **Logistic Regression model** that classifies land cover types based on noisy NDVI data. Despite imperfections in the data, your model should generalize well—particularly to the clean, unseen test subset.
 
------
+---
 
-## 🎯 The Challenge: NDVI-based Land Cover Classification
+## 🌱 What is NDVI?
 
-### Key Concepts
+**NDVI (Normalized Difference Vegetation Index)** is a remote sensing index used to monitor vegetation health. It is calculated as:
 
-1.  **NDVI (Normalized Difference Vegetation Index)**
-    The NDVI is a crucial metric for measuring vegetation health using satellite data. It's calculated as:
+$$
+\text{NDVI} = \frac{\text{NIR} - \text{RED}}{\text{NIR} + \text{RED}}
+$$
 
-    $$
-    $$$$\\text{NDVI} = \\frac{\\text{NIR} - \\text{RED}}{\\text{NIR} + \\text{RED}}
+Where:
 
-    $$
-    $$$$Where:
+* **NIR**: Near-Infrared Reflectance
+* **RED**: Red Reflectance
 
-      * **NIR** = Near-Infrared reflectance
-      * **RED** = Red reflectance
+High NDVI values typically indicate healthy vegetation, while low or negative values may indicate water, barren land, or impervious surfaces.
 
-2.  **Data Challenges**
-    The dataset presents several real-world complexities you'll need to address:
+---
 
-      * **Noise**: Both the satellite imagery and crowdsourced data contain noise, stemming from factors like cloud cover in images and inaccuracies in OpenStreetMap (OSM) labeling/digitization of polygons.
-      * **Missing Data**: Certain NDVI values are missing due to cloud cover obstructing satellite views.
-      * **Temporal Variations**: NDVI values naturally vary seasonally. Effective feature engineering will be key to extracting meaningful trends from these time series.
+## 🗂️ Dataset Description
 
-    **Important Note:** The training data (`hacktrain.csv`) and the public leaderboard test data (`hacktest.csv`, 89% of it) contain noisy observations. However, the **private leaderboard data** (the remaining 11% of `hacktest.csv`) is **clean and free of noise**. This design will evaluate how well your model generalizes beyond noisy training conditions to real-world clean data.
+Each row in the dataset includes:
 
------
+* **`ID`**: A unique identifier for each sample
+* **`class`**: Ground truth land cover label (`{Water, Impervious, Farm, Forest, Grass, Orchard}`)
+* **27 NDVI Time Points**: Columns like `20150720_N`, `20150602_N`, representing NDVI values over time
 
-## 📊 Dataset Description
+### 📁 Files Provided
 
-Each row in the dataset provides the following information:
+* `hacktrain.csv`: Training dataset (contains noise due to cloud cover and digitization errors)
+* `hacktest.csv`: Test dataset (89% noisy, 11% clean — used for private leaderboard evaluation)
 
-  * **`class`**: The ground truth label of the land cover type. Possible classes are: `{Water, Impervious, Farm, Forest, Grass, Orchard}`
-  * **`ID`**: A unique identifier for each sample.
-  * **27 NDVI Time Points**: Columns labeled in the format `YYYYMMDD_N` (e.g., `20150720_N`, `20150602_N`). These represent NDVI values collected on different dates, forming a time series that illustrates vegetation dynamics for each location.
-
-### Files
-
-You will be working with two primary files:
-
-  * **`hacktrain.csv`**: This is your training dataset. It contains noise due to inaccurate NDVI calculations in the presence of clouds.
-  * **`hacktest.csv`**: This dataset will be used to test your model. As mentioned, 89% of it contains noise (for the public leaderboard), and 11% is clean (for the private leaderboard evaluation).
-
-### Data Download
-
-You can download the dataset directly from Kaggle using the following command in your terminal or Kaggle Notebook:
+📥 **Download Command (Kaggle CLI):**
 
 ```bash
 kaggle competitions download -c summer-analytics-mid-hackathon
 ```
 
-*Make sure you have the Kaggle API installed and configured.*
+> *Ensure you’ve set up the Kaggle API correctly.*
 
------
+---
 
-## ⚙️ Rules & Evaluation
+## ⚙️ Model Requirements & Evaluation
 
-### Model Constraint
+### ✅ Model Constraints
 
-  * You are strictly required to use **Logistic Regression** only. Multiclass classification is expected.
+* Use **Logistic Regression only**
+* Multiclass classification setup
 
-### Preprocessing
+### 🧪 Preprocessing Encouraged
 
-  * You are encouraged to perform **denoising, imputation, and feature engineering** to improve your model's performance.
+* **Denoising**: Filter out NDVI outliers caused by cloud cover
+* **Missing Value Handling**: Impute missing NDVI values
+* **Feature Engineering**: Extract seasonal patterns, trends, or aggregate statistics
 
-### Leaderboard
+### 📊 Evaluation Metric
 
-  * **Public Leaderboard (89% of test data)**: Provides immediate feedback on your submission's performance.
-  * **Private Leaderboard (11% of test data)**: This will determine your final ranking and is designed to prevent overfitting to the noisy public data.
+* **Accuracy Score**
 
-### Evaluation Metric
+### 🏆 Leaderboards
 
-  * Submissions will be evaluated based on the **accuracy score** of the predicted class.
+* **Public Leaderboard**: Based on 89% noisy test data
+* **Private Leaderboard**: Based on the clean 11% — final rankings depend on this!
 
-### Submission Format
+---
 
-Your submission file should be a CSV with two columns: `ID` and `class`.
+## 📝 Submission Guidelines
 
-Example:
+Your final submission should be a `.csv` file with:
+
+* `ID`
+* `class`
+
+**Example:**
 
 ```csv
 ID,class
@@ -100,20 +95,21 @@ ID,class
 2,water
 3,grass
 4,impervious
-..
+...
 ```
 
------
+### 🚨 Rules
 
-## 🚀 Submissions
+* Only two submissions will be evaluated for final scoring
+* The **best private leaderboard score** among your submissions determines your rank
 
-You can make multiple submissions. The evaluated submission with the **best Private Score** will be used for your final ranking.
+---
 
-  * You can select up to 2 submissions to be evaluated for your final leaderboard score.
-  * Ensure your submission file adheres strictly to the specified format.
+## 🙌 Final Notes
 
------
+* Stay focused on building a robust model that **generalizes well**, not just one that scores high on noisy data.
+* Engage with the [Kaggle Discussion Tab](https://www.kaggle.com/competitions/summer-analytics-mid-hackathon/discussion) for help and updates.
 
-Good luck, and happy hacking\! If you have any questions during the hackathon, please refer to the Kaggle competition page for discussions or announcements.
+Good luck, and happy hacking! 🍀
 
------
+---
